@@ -1,0 +1,78 @@
+<head>
+	<meta charset="utf-8"/>
+	<title>欢迎</title>
+	<style>
+	body {
+		text-align: center;
+		background-color: #eeeeee;
+		padding: 20px 0;
+	}
+	
+	ol {
+		text-align: left;
+		max-width: 600px;
+		line-height: 27px;
+		margin: 0 auto;
+	}
+	
+	b[red] {
+		color: red;
+	}
+	
+	input[type="submit"] {
+		border-radius: 2px;
+		border: none;
+		background-color: #4389ff;
+		color: #fafafa;
+		font-size: 20px;
+		cursor: pointer;
+		transition: box-shadow 0.3s;
+		box-shadow: 1px 1px 10px rgba(32, 32, 32, 0.2);
+		padding: 10px 20px;
+	}
+	
+	input[type="submit"]:hover {
+		box-shadow: 1px 1px 10px rgba(32, 32, 32, 0.4);
+	}
+
+	textarea {
+		width: 400px;
+		height: 250px;
+		display: block;
+	}
+	</style>
+	<script>
+	function save() {
+		localStorage.setItem('config', document.getElementById('config').value);
+	}
+	function register() {
+		if ("serviceWorker" in navigator) {
+			let config = JSON.parse(localStorage.config);
+			navigator.serviceWorker.register("/sw.js")
+				.then(r => r.installing.postMessage({ config }))
+				.then(() => location.reload());
+		}
+	}
+	document.addEventListener('DOMContentLoaded', () => {
+		document.getElementById('config').value = localStorage.config || '';
+	}, false);
+	</script>
+</head>
+<body>
+	<h1>欢迎</h1>
+	<ol>
+		<li>
+			输入配置并保存
+			<textarea id="config"></textarea>
+		</li>
+		<li>
+			点击下面的按钮注册 ServiceWorker 并开始使用
+		</li>
+		<li>
+			如有其他疑问, 请联系 <a href="https://t.me/ExcitedCodes">@ExcitedCodes</a>
+		</li>
+	</ol>
+	<br />
+	<input type="submit" onclick="save()" value="保存配置" />
+	<input type="submit" onclick="register()" value="注册 ServiceWorker" />
+</body>
